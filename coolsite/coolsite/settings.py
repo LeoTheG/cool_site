@@ -29,7 +29,7 @@ SECRET_KEY = '9_zy&^)3)xlol))&vwa(%j1e=h$$q6$&v5+8@vle!(9)um$=vp'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+LOGIN_REDIRECT_URL = 'index'
 
 # Application definition
 
