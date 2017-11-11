@@ -28,5 +28,5 @@ def register(request):
                 raise forms.ValidationError("That username already exists")
     else:
         form = UserRegistrationForm()
-        return render(request, 'register.html', {'form':form})
-    return render(request, 'register.html', {'form':form})
+        return render(request, 'register.html', {'form':form,'user':request.user})
+    return render(request, 'register.html', {'form':form,'user':request.user})

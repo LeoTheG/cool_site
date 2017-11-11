@@ -1,0 +1,53 @@
+body {
+  background-color: #FFFAFB;
+  color: #DFDCE3;
+}
+h1{
+  color: #4A4A48;
+}
+h2,h3{
+  color: #FFFAFB;
+}
+h1{
+  font-size: 300%;
+}
+h2{
+  font-size: 250%;
+}
+h3{
+  font-size: 200%;
+}
+
+#footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+}
+#loginmsg{
+  padding: 50px;
+}
+.login {
+  position: relative;
+  right: 30px;
+}
+.navbar {
+  background-color: #A4C2A5;
+}
+.navbar-light .navbar-brand {
+  color: #FFFAFB;
+}
+div#navbarNavDropdown{
+  color: white;
+}
+/* for sandwich links */
+.navbar-light .navbar-collapse .navbar-nav > li > a {
+  color: #FFFAFB;
+}
+.navbar-light .navbar-nav .navbar-link {
+  color: white;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+      color: #ffffff;
+}
