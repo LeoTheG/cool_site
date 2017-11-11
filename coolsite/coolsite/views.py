@@ -46,11 +46,16 @@ def login(request):
         form = UserSignInForm()
         return render(request, 'registration/login.html', {'form':form,'user':request.user})
     elif request.method == 'POST':
-        username = User.objects.get(username=request.POST['username']).username
+        form = UserSignInForm(request.POST)
+        #username = User.objects.get(username=request.POST['username']).username
+        username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username,password=password)
         if user is not None:
             logsin(request, user)
+        else:
+            print "not authenticated user in login"
+            return render(request, 'registration/login.html', {'form':form,'user':request.user})
     return redirect('index')
 
 def logout(request):

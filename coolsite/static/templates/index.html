@@ -4,7 +4,7 @@
   <body>
     {% if user.is_authenticated %}
       <center>
-        <h1>Welcome to Cool Site {{user.username}}</h1>
+        <h1>Welcome to Cool Site, {{user.username}}</h1>
       </center>
     {% else %}
     <div id="loginmsg"><center><h1>You gotta log in!<h1></center></div>
