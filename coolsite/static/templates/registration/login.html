@@ -1,4 +1,26 @@
 {% extends 'base.html' %}
+
+{% block javascript %}
+<script>
+$("#id_username").change(function () {
+  var username = $(this).val();
+  $.ajax({
+    url: '/ajax/validate_username/',
+    data: {
+      'username': username
+    },
+    dataType: 'json',
+    success: function(data){
+      if (data.is_taken == false){
+        alert("Username does not exist");
+      }
+    }
+  });
+});
+</script>
+{% endblock %}
+
+
 {% block content %}
 <center>
   <div class="loginmain"><h1>Login</h1></div>
