@@ -1,3 +1,5 @@
+from .models import Entry
+from .models import Profile
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -5,12 +7,11 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout as logsout
 from django.contrib.auth import login as logsin
-from django import forms
 from django.shortcuts import render,redirect
+from django import forms
 from forms import UserRegistrationForm
 from forms import UserSignInForm
 from forms import EntryForm
-from coolsite.models import Entry
 #from django.core.exceptions import ValidationError
 
 def index(request):
@@ -26,6 +27,8 @@ def register(request):
             password = cd['password']
             if not (User.objects.filter(username=username).exists()):
                 user = User.objects.create_user(username=username,password=password)
+                profile = Profile(user=user)
+                profile.save()
                 logsin(request,user)
                 return redirect('index')
     else:
@@ -74,7 +77,7 @@ def check_user_authentication(request, usernameslug):
 def user_profile(request, usernameslug):
     if not check_user_authentication(request,usernameslug):
         return redirect('index')
-    return render(request, 'profile.html', {'usernameslug':usernameslug, 'user':request.user})
+    return render(request, 'profile.html', {'usernameslug':usernameslug, 'user':request.user, 'entries':list(Profile.objects.get(user=User.objects.get(username=usernameslug)).entry_set.all())[::-1]})
 
 def new_post(request, usernameslug):
     if not check_user_authentication(request,usernameslug):
@@ -86,9 +89,9 @@ def new_post(request, usernameslug):
         form = EntryForm(request.POST)
         title = request.POST['title']
         body = request.POST['body']
-        profile = User.objects.get(username=request.user.username)
+        profile = User.objects.get(username=request.user.username).profile_set.first()
         #TODO check validity
         entry = Entry(title=title,body=body,profile=profile)
         entry.save()
-        return render(request, 'profile.html', {'usernameslug':usernameslug,'user':request.user,'form':form})
+        return render(request, 'profile.html', {'usernameslug':usernameslug,'user':request.user,'form':form, 'entries':User.objects.get(username=usernameslug).profile_set.first().entry_set.all()})
     return redirect('index')
