@@ -33,6 +33,19 @@ h3{
   position: relative;
   top: 50px;
 }
+div#comment {
+  position: relative;
+  overflow: hidden;
+  width: 500px;
+}
+div#comment-body h3, div#comment-username h3{
+  position: relative;
+  float: left;
+  width: 50%;
+}
+#comment-username h3{
+  color: green;
+}
 .profile-name{
   text-align: center;
 }

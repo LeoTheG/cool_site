@@ -39,7 +39,14 @@
   </div>
   <div id="comments-{{entry.id}}" style="display:none;">
     {% for comment in entry.comment_set.all %}
-    <h3>{{comment.user.username}}:{{comment.body}}</h3> 
+    <div id="comment">
+      <div id="comment-username">
+        <h3>{{comment.user.username}}:</h3>
+      </div>
+      <div id="comment-body">
+        <h3>{{comment.body}}</h3>
+      </div>
+    </div>
     {% endfor %}
   </div>
   <hr width="20%">
