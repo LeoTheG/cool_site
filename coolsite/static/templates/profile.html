@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{usernameslug}}'s Profile
+{% endblock %}
+
+{% block content %}
+<div class="profile-name"><h1>{{usernameslug}}</h1></div>
+{% if user.username == usernameslug %}
+<a href="{% url 'new_post' usernameslug=user.username %}">
+  <button type="button" class="btn btn-primary">Add Post</button></a>
+  <button type="button" class="btn btn-primary">Manage Posts</button>
+  {% endif %}
+{% endblock %}

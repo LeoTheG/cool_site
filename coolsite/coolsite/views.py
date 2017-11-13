@@ -9,6 +9,8 @@ from django import forms
 from django.shortcuts import render,redirect
 from forms import UserRegistrationForm
 from forms import UserSignInForm
+from forms import EntryForm
+from coolsite.models import Entry
 #from django.core.exceptions import ValidationError
 
 def index(request):
@@ -60,4 +62,33 @@ def login(request):
 
 def logout(request):
     logsout(request)
+    return redirect('index')
+
+def check_user_authentication(request, usernameslug):
+    if not request.user.is_authenticated():
+        return False
+    if not User.objects.filter(username=usernameslug).exists():
+        return False
+    return True
+
+def user_profile(request, usernameslug):
+    if not check_user_authentication(request,usernameslug):
+        return redirect('index')
+    return render(request, 'profile.html', {'usernameslug':usernameslug, 'user':request.user})
+
+def new_post(request, usernameslug):
+    if not check_user_authentication(request,usernameslug):
+        return redirect('index')
+    if request.method == 'GET':
+        form = EntryForm()
+        return render(request, 'new_post.html', {'usernameslug':usernameslug, 'user':request.user, 'form':form})
+    elif request.method == 'POST':
+        form = EntryForm(request.POST)
+        title = request.POST['title']
+        body = request.POST['body']
+        profile = User.objects.get(username=request.user.username)
+        #TODO check validity
+        entry = Entry(title=title,body=body,profile=profile)
+        entry.save()
+        return render(request, 'profile.html', {'usernameslug':usernameslug,'user':request.user,'form':form})
     return redirect('index')

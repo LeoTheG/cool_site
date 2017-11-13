@@ -40,3 +40,6 @@ class UserSignInForm(forms.Form):
         model = User
         fields = ('username', 'password')
 
+class EntryForm(forms.Form):
+    title = forms.CharField(required=True, label='Title',max_length=32)
+    body = forms.CharField(required=True, label='Post', max_length=1024)

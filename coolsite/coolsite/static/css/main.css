@@ -17,7 +17,19 @@ h2{
 h3{
   font-size: 200%;
 }
-
+.new-post{
+  text-align: center;
+  position: relative;
+  top: 100px;
+}
+.new-post-title{
+  text-align: center;
+  position: relative;
+  top: 50px;
+}
+.profile-name{
+  text-align: center;
+}
 #footer{
   position:fixed;
   bottom:0;
