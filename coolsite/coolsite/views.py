@@ -1,5 +1,6 @@
 from .models import Entry
 from .models import Profile
+from .models import Comment
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -8,11 +9,14 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import logout as logsout
 from django.contrib.auth import login as logsin
 from django.shortcuts import render,redirect
+from django.urls import reverse
 from django import forms
 from forms import UserRegistrationForm
 from forms import UserSignInForm
 from forms import EntryForm
-#from django.core.exceptions import ValidationError
+
+def get_entries(usernameslug):
+    return list(User.objects.get(username=usernameslug).profile_set.first().entry_set.all())[::-1]
 
 def index(request):
     #return HttpResponse("This is the cool site index")
@@ -77,7 +81,28 @@ def check_user_authentication(request, usernameslug):
 def user_profile(request, usernameslug):
     if not check_user_authentication(request,usernameslug):
         return redirect('index')
-    return render(request, 'profile.html', {'usernameslug':usernameslug, 'user':request.user, 'entries':list(Profile.objects.get(user=User.objects.get(username=usernameslug)).entry_set.all())[::-1]})
+    if request.method == 'POST':
+        print "user page:"+usernameslug
+        user = User.objects.get(username=usernameslug)
+        profile = user.profile_set.first()
+        entry_set = profile.entry_set.all()
+        for entry in entry_set:
+            if ('comment-'+str(entry.id)) in request.POST:
+                print "comment exists"
+                commentBody = request.POST.get('comment-'+str(entry.id))[:128]
+                c = Comment(body=commentBody,entry=Entry.objects.get(id=entry.id),user=request.user)
+                print "Saving comment:"+commentBody+"\n\tfor entry:"+str(entry.id)
+                c.save()
+
+        '''
+        for entry in User.objects.get(username=usernameslug).profile_set.first().entry_set().all():
+            if request.POST['comment-'+str(entry.id)]:
+                comment = request.POST['comment']
+                c = Comment(body=comment,entry=Entry.objects.get(id=entry.id))
+                print "Saving comment:"+comment+"\n\tfor entry:"+str(entry.id)
+                c.save()
+                '''
+    return render(request, 'profile.html', {'usernameslug':usernameslug, 'user':request.user, 'entries':get_entries(usernameslug)})
 
 def new_post(request, usernameslug):
     if not check_user_authentication(request,usernameslug):
@@ -93,5 +118,12 @@ def new_post(request, usernameslug):
         #TODO check validity
         entry = Entry(title=title,body=body,profile=profile)
         entry.save()
-        return render(request, 'profile.html', {'usernameslug':usernameslug,'user':request.user,'form':form, 'entries':User.objects.get(username=usernameslug).profile_set.first().entry_set.all()})
+        return redirect('user_profile',usernameslug=usernameslug)
+        #return render(request, 'profile.html', {'usernameslug':usernameslug,'user':request.user,'form':form,'entries':get_entries(usernameslug)})
     return redirect('index')
+
+def manage_posts(request, usernameslug):
+    if not check_user_authentication(request,usernameslug):
+        return redirect('index')
+    if request.method == 'GET':
+        return render(request, 'profile.html', {'usernameslug':usernameslug,'user':request.user,'entries':get_entries(usernameslug),'manage':True})

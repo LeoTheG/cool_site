@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^ajax/validate_username/$', views.validate_username, name='validate_username'),
     url(r'^(?P<usernameslug>[-\w]+)/profile/$', views.user_profile, name='user_profile'),
     url(r'^(?P<usernameslug>[-\w]+)/profile/new_post/$', views.new_post, name='new_post'),
+    url(r'^(?P<usernameslug>[-\w]+)/profile/manage_posts/$', views.manage_posts, name='manage_posts'),
 ]
