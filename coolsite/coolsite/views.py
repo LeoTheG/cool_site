@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import logout as logsout
 from django.contrib.auth import login as logsin
 from django.shortcuts import render,redirect
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 from django import forms
 from forms import UserRegistrationForm
 from forms import UserSignInForm
