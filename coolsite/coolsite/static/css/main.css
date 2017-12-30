@@ -1,0 +1,82 @@
+body {
+  background-color: #FFFAFB;
+  color: #DFDCE3;
+}
+h1,h2,h3{
+  color: #4A4A48;
+}
+h1{
+  font-size: 300%;
+}
+h2{
+  font-size: 250%;
+}
+h3{
+  font-size: 150%;
+}
+.new-post{
+  text-align: center;
+  position: relative;
+}
+.entry-title{
+  margin: 10px;
+  display:table;
+}
+.entry{
+  margin: 10px;
+  word-wrap: break-word;
+  width: 500px;
+  text-align: center;
+}
+.new-post-title{
+  text-align: center;
+  position: relative;
+  top: 50px;
+}
+div#comment-body, div#comment-username {
+  display:inline-block;
+}
+#comment-username h3{
+  width: 55%;
+  margin-right: 20%;
+  color: #A4C2A5;
+}
+#comment-body h3{
+  width:100%;
+}
+.profile-name{
+  text-align: center;
+}
+#footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+}
+#loginmsg{
+  padding: 50px;
+}
+.login {
+  position: relative;
+  right: 30px;
+}
+.navbar {
+  background-color: #A4C2A5;
+}
+.navbar-light .navbar-brand {
+  color: #FFFAFB;
+}
+div#navbarNavDropdown{
+  color: white;
+}
+/* for sandwich links */
+.navbar-light .navbar-collapse .navbar-nav > li > a {
+  color: #FFFAFB;
+}
+.navbar-light .navbar-nav .navbar-link {
+  color: white;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+      color: #ffffff;
+}

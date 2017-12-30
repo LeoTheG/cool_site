@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{usernameslug}}'s Profile
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'user_profile' usernameslug=usernameslug %}">
+<div class="profile-name"><h1>{{usernameslug}}</h1></div>
+</a>
+{% if user.username == usernameslug %}
+<center>
+<a href="{% url 'new_post' usernameslug=user.username %}">
+  <button type="button" class="btn btn-primary">Add Post</button></a>
+<a href="{% url 'manage_posts' usernameslug=user.username %}">
+  <button type="button" class="btn btn-primary">Manage Posts</button>
+</a>
+</center>
+{% endif %}
+<center>
+{% for entry in entries %}
+  <div class="entry-title">
+    <h2> {{entry.title}} {% if manage %}
+    <button onclick="deletePost()">Delete Post</button>
+    {% endif %}
+</h2>
+      </div>
+  <div class="entry">
+    <h3>{{entry.body}}</h3>
+  </div>
+  <button class="btn btn-link" onclick="showComments({{entry.id}})">show comments</button>
+  <button class="btn btn-link" onclick="addComment({{entry.id}})">comment</button>
+  <div id="comment-box-{{entry.id}}" style="display:none;">
+    <form method="POST">
+      {% csrf_token %}
+      <textarea name="comment-{{entry.id}}" id="comment-textarea-{{entry.id}}" maxlength=128></textarea>
+    <button type="submit">Submit</button> 
+    </form>
+  </div>
+  <div id="comments-{{entry.id}}" style="display:none;">
+    {% for comment in entry.comment_set.all %}
+    <div id="comment">
+      <div id="comment-username">
+        <h3>{{comment.user.username}}:</h3>
+      </div>
+      <div id="comment-body">
+        <h3>{{comment.body}}</h3>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <hr width="20%">
+  {% endfor %}
+{% endblock %}
+</center>
+
+{% block javascript %}
+<script type='text/javascript'>
+  function addComment(entryId) {
+    var x = document.getElementById("comment-box-"+entryId);
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    }
+    else{
+      x.style.display = "none";
+    }
+  }
+  function showComments(entryId) {
+    var x = document.getElementById("comments-"+entryId);
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    }
+    else{
+      x.style.display = "none";
+    }
+
+  }
+</script>
+{% endblock %}
